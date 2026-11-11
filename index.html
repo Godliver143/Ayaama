@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ayaama — Snap your schedule. Stay on time.</title>
+<meta name="description" content="Turn a photo of your class schedule into a phone calendar with class alerts and homework reminders. Free, private, and it runs right on your device.">
+<meta name="theme-color" content="#DC3A16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23DC3A16'/%3E%3Ccircle cx='32' cy='34' r='18' fill='none' stroke='%23FFF7F2' stroke-width='5'/%3E%3Cpath d='M32 24v11l7 5' fill='none' stroke='%23FFF7F2' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M24 9h16' stroke='%23FFE08A' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#FFFBF8; --card:#FFFFFF; --ink:#1A1816; --muted:#534E48; --line:#E6E0D8;
+  --brand:#DC3A16; --brand-d:#B02C10; --brand-soft:#FFE4D8; --brand-hot:#E4471C;
+  --teal:#0C7A6E; --teal-soft:#D9F3EF; --teal-ink:#085F56;
+  --gold:#C48400; --sun:#FFE08A; --focus:#0C7A6E;
+  --a:#1264B8; --a-soft:#E3F1FC; --b:#7C3AED; --b-soft:#F0E7FF;
+  --warn:#B91C1C; --warn-soft:#FDE8E6;
+  --r:16px; --shadow:0 1px 2px rgba(26,24,22,.06),0 8px 24px rgba(26,24,22,.07);
+  --brand-grad:linear-gradient(180deg,#E4471C 0%,#DC3A16 45%,#C83212 100%);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:radial-gradient(ellipse 900px 440px at 50% -80px,rgba(220,58,22,.11),transparent 58%),radial-gradient(ellipse 520px 300px at 100% 120px,rgba(12,122,110,.07),transparent 55%),var(--bg)}
+h1,h2,h3{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;line-height:1.15;margin:0 0 .4em}
+a{color:var(--brand-d)}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+header.top{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,251,248,.9));backdrop-filter:blur(10px);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(220,58,22,.1)}
+header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--brand),var(--teal));opacity:.9;pointer-events:none}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{display:flex;align-items:center;gap:9px;font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:22px;font-weight:700;color:var(--ink);text-decoration:none}
+.logo svg{width:30px;height:30px}
+.steps-nav{display:flex;gap:6px}
+.steps-nav a{display:inline-flex;width:28px;height:28px;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:700;text-decoration:none;background:var(--brand-soft);color:var(--brand-d);border:1.5px solid rgba(220,58,22,.28)}
+.steps-nav a:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+.hero{padding:34px 0 10px;text-align:left}
+.hero h1{font-size:40px;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.hero p.lead{font-size:18px;color:var(--muted);margin:.2em 0 1.2em}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--teal-soft);color:var(--teal-ink);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
+.how{display:grid;gap:10px;margin:22px 0 8px;padding:0;list-style:none;counter-reset:s}
+.how li{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.how li::before{counter-increment:s;content:counter(s);flex:0 0 30px;height:30px;border-radius:50%;background:var(--brand-grad);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(220,58,22,.28)}
+.how b{display:block}
+.how span{color:var(--muted);font-size:15px}
+section.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px 18px;margin:18px 0}
+section.card>h2{font-size:26px;display:flex;align-items:center;gap:10px}
+section.card>h2 .n{flex:0 0 32px;height:32px;border-radius:50%;background:var(--brand-grad);color:#fff;font:700 15px/32px -apple-system,system-ui,sans-serif;text-align:center;box-shadow:0 3px 8px rgba(220,58,22,.28)}
+.sub{color:var(--muted);margin:-.1em 0 1em;font-size:15px}
+.btn{appearance:none;border:0;border-radius:12px;padding:13px 18px;font-weight:600;font-size:16px;line-height:1.2;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;min-height:48px}
+.btn.primary{background:var(--brand-grad);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.22) inset,0 6px 16px rgba(220,58,22,.28)}
+.btn.primary:hover{background:linear-gradient(180deg,#DC3A16 0%,#B02C10 100%);box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 4px 12px rgba(176,44,16,.3)}
+.btn.ghost{background:#fff;color:var(--brand-d);border:1.5px solid var(--brand)}
+.btn.ghost:hover{background:var(--brand-soft)}
+.btn.quiet{background:transparent;color:var(--muted);padding:8px 10px;min-height:36px;font-weight:500}
+.btn.quiet:hover{color:var(--ink);background:var(--brand-soft)}
+.btn.small{padding:8px 12px;min-height:38px;font-size:15px;border-radius:10px}
+.btn.block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1 1 160px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{appearance:none;font-family:inherit;color:var(--ink);text-align:center;cursor:pointer;background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 12px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:var(--shadow);transition:border-color .15s,background .15s,box-shadow .15s,transform .15s}
+.choice:hover{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 8px 22px rgba(220,58,22,.14);transform:translateY(-1px)}
+.choice:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.choice .ic{font-size:36px;line-height:1}
+.choice b{font-size:17px;line-height:1.2}
+.choice .ln{font-size:14px;color:var(--muted);line-height:1.35}
+.choice[aria-pressed=true]{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 1px var(--brand) inset,0 8px 20px rgba(220,58,22,.16)}
+@media (max-width:359px){.choices{grid-template-columns:1fr}.choice{min-height:0;flex-direction:row;flex-wrap:wrap;text-align:left;justify-content:flex-start}}
+.note{background:var(--teal-soft);color:var(--teal-ink);border-radius:12px;padding:10px 12px;font-size:14px}
+.drop{border:2px dashed #F0B59A;border-radius:18px;padding:22px 16px;text-align:center;background:#FFF8F4}
+.drop.over{background:var(--brand-soft);border-color:var(--brand)}
+.drop p{margin:.4em 0 1em;color:var(--muted)}
+.drop .btn{margin:4px}
+.thumbs{display:grid;gap:10px;margin-top:14px}
+.thumb{display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}
+.thumb img{width:56px;height:56px;object-fit:cover;object-position:top;border-radius:10px;border:1px solid var(--line)}
+.thumb .meta{min-width:0}
+.thumb .nm{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thumb .st{font-size:14px;font-weight:600}
+.thumb .st.ok{color:var(--teal)} .thumb .st.err{color:var(--warn)}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:11px;overflow:hidden;margin-top:4px}
+.seg button{white-space:nowrap;border:0;background:#fff;padding:7px 9px;font-weight:600;font-size:14px;font-family:inherit;color:var(--muted);cursor:pointer}
+.seg button+button{border-left:1.5px solid var(--line)}
+.seg button.on{background:var(--brand-grad);color:#fff}
+.bar{height:8px;border-radius:9px;background:var(--brand-soft);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;width:0;background:var(--brand-grad);transition:width .25s}
+label.f{display:block;font-size:14px;font-weight:600;color:var(--muted);margin:0 0 4px}
+input[type=text],input[type=date],input[type=time],input[type=number],select{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:10px 11px;font-size:16px;font-family:inherit;color:var(--ink);background:#fff;min-height:44px}
+input:focus,select:focus{outline:2px solid var(--focus);outline-offset:1px;border-color:var(--focus)}
+input:disabled,select:disabled{background:#F5F2EF;color:#8A857E}
+.field{margin:0 0 12px;min-width:0}
+.inline>*{min-width:0}
+input,select{min-width:0;max-width:100%}
+input[type=date],input[type=time]{-webkit-appearance:none;appearance:none;display:block}
+.classes{display:grid;gap:12px}
+.cls{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+.cls.t-A{border-left-color:var(--a);background:linear-gradient(90deg,var(--a-soft),#fff 56px)}
+.cls.t-B{border-left-color:var(--b);background:linear-gradient(90deg,var(--b-soft),#fff 56px)}
+.cls.t-ALL{border-left-color:var(--teal);background:linear-gradient(90deg,var(--teal-soft),#fff 56px)}
+.cls .g{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.cls .g .full{grid-column:1/-1}
+.cls .g label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:2px}
+.cls .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.tag{display:inline-block;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700}
+.tag.A{background:var(--a-soft);color:var(--a)} .tag.B{background:var(--b-soft);color:var(--b)} .tag.ALL{background:var(--teal-soft);color:var(--teal-ink)} .tag.off{background:#F3F0EC;color:var(--muted)}
+.flag{font-size:12px;color:var(--warn);font-weight:600}
+.empty{text-align:center;color:var(--muted);padding:18px;border:1.5px dashed var(--line);border-radius:14px}
+fieldset{border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 14px;min-width:0}
+legend{font-weight:700;padding:0 6px;font-size:16px}
+.days{display:flex;flex-wrap:wrap;gap:6px}
+.days label{position:relative}
+.days input{position:absolute;opacity:0;pointer-events:none}
+.days span{display:inline-flex;min-width:42px;height:40px;align-items:center;justify-content:center;border:1.5px solid var(--line);border-radius:10px;font-weight:600;font-size:14px;color:var(--muted);background:#fff;cursor:pointer;padding:0 6px}
+.days input:checked+span{background:var(--brand-grad);border-color:var(--brand);color:#fff}
+.days input:focus-visible+span{outline:2px solid var(--focus)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--brand-soft);color:var(--brand-d);border-radius:999px;padding:5px 6px 5px 12px;font-size:14px;font-weight:600}
+.chip button{border:0;background:#fff;border-radius:50%;width:22px;height:22px;cursor:pointer;color:var(--brand-d);font-weight:700;line-height:22px;padding:0}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:8px 0;font-size:15px}
+.chk input{width:20px;height:20px;margin-top:2px;accent-color:var(--brand);flex:0 0 20px}
+.inline{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.act{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:#fff}
+.hint{font-size:13px;color:var(--muted);margin:4px 0 0}
+.warnbox{background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:14px;margin:10px 0}
+.week{display:grid;gap:8px}
+.day{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.day.off{background:#F6F4F1;color:var(--muted)}
+.day .dh{display:flex;justify-content:space-between;align-items:center;font-weight:700;gap:8px}
+.day ul{margin:6px 0 0;padding:0;list-style:none;font-size:14px}
+.day li{display:flex;gap:8px;padding:2px 0}
+.day li time{flex:0 0 70px;color:var(--muted);font-variant-numeric:tabular-nums}
+.day li.rem{color:var(--teal)} .day li.ac{color:var(--brand-d)}
+.wkhd{font-weight:700;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 2px}
+.dl{display:grid;gap:10px;margin-top:14px}
+.stat{font-size:15px;color:var(--muted);margin:8px 0 0}
+details.howto{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0;background:#fff}
+details.howto summary{font-weight:700;cursor:pointer}
+details.howto ol{margin:.6em 0 0;padding-left:1.2em}
+details.howto li{margin:.25em 0}
+footer{color:var(--muted);font-size:14px;text-align:center;padding:28px 0 48px;margin-top:8px;border-top:1px solid var(--line)}
+footer .ded{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-style:italic;font-size:16px;color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.hidden{display:none!important}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:15px;z-index:50;box-shadow:var(--shadow);max-width:90vw}
+@media (min-width:700px){
+  .hero h1{font-size:52px}
+  .how{grid-template-columns:repeat(3,1fr)}
+  .how li{flex-direction:column}
+  .cls .g{grid-template-columns:2fr 1fr 1fr 1fr}
+  .cls .g .full{grid-column:auto}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="#top" aria-label="Ayaama home">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#DC3A16"/><circle cx="32" cy="34" r="18" fill="none" stroke="#FFF7F2" stroke-width="5"/><path d="M32 24v11l7 5" fill="none" stroke="#FFF7F2" stroke-width="5" stroke-linecap="round"/><path d="M24 9h16" stroke="#FFE08A" stroke-width="5" stroke-linecap="round"/></svg>
+    Ayaama
+  </a>
+  <nav class="steps-nav" aria-label="Steps"><a href="#s1">1</a><a href="#s2">2</a><a href="#s3">3</a><a href="#s4">4</a></nav>
+</div></header>
+
+<main class="wrap" id="top">
+  <div class="hero">
+    <span class="pill">🔒 Private: everything stays on your device</span>
+    <h1 style="margin-top:14px">Snap your schedule.<br><em>Stay on time.</em></h1>
+    <p class="lead">Turn a screenshot of your class schedule into a phone calendar, with class alerts, homework check-ins, and practice built in. Made for students and the parents cheering them on.</p>
+    <ol class="how">
+      <li><div><b>Snap it or type it</b><span>Upload a screenshot of the schedule and we'll read it, or type your classes in yourself in about 2 minutes.</span></div></li>
+      <li><div><b>Check it</b><span>Fix anything the reader got wrong, then add days off, practice, and games.</span></div></li>
+      <li><div><b>Add it to your phone</b><span>Download one calendar file that works with iPhone Calendar and Google Calendar.</span></div></li>
+    </ol>
+  </div>
+
+  <section class="card" id="s1">
+    <h2><span class="n">1</span>Add your schedule</h2>
+    <p class="sub">Pick whichever is easier. You can switch anytime, and the classes you've added stay put.</p>
+    <div class="choices" role="group" aria-label="How do you want to add your schedule?">
+      <button type="button" class="choice" data-mode="upload" aria-pressed="false">
+        <span class="ic" aria-hidden="true">📸</span><b>Upload a screenshot</b><span class="ln">We'll read your classes for you</span>
+      </button>
+      <button type="button" class="choice" data-mode="manual" aria-pressed="false">
+        <span class="ic" aria-hidden="true">⌨️</span><b>Type it in</b><span class="ln">Add your classes yourself, about 2 minutes</span>
+      </button>
+    </div>
+    <div id="uploadPane" class="hidden">
+      <p class="sub" style="margin-top:14px">Screenshots from the school app work best. Got an A/B rotation? Add one picture for each day type.</p>
+      <div class="drop" id="drop">
+        <p>Drop images here, or choose them from your phone.</p>
+        <label class="btn primary" for="file">Choose schedule pictures
+          <input id="file" class="sr" type="file" accept="image/*" multiple>
+        </label>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary block hidden" type="button" id="readBtn">Read my schedule</button>
+      </div>
+      <p class="hint">The reader runs in your browser, and your pictures are never uploaded. The first read downloads a free text-reading tool (about 10 MB), so it can take a moment.</p>
+    </div>
+    <div id="manualPane" class="hidden">
+      <p class="note" style="margin-top:14px">You'll type your classes in step 2, right below. Tip: enter your A day first, then tap <b>Copy A-day times to B day</b> so you only have to add the B-day class names.</p>
+      <button class="btn ghost block" type="button" id="toList">Go to my class list ↓</button>
+    </div>
+  </section>
+
+  <section class="card" id="s2">
+    <h2><span class="n">2</span>Check your classes</h2>
+    <p class="sub" id="s2sub">Look over each class and fix anything that looks off. Picture readers make mistakes, so this step matters.</p>
+    <div id="manualHint" class="note hidden" style="margin-bottom:12px">✍️ <b>Type each class from your schedule.</b> Start with your A day (or pick “Every day” if your classes don't rotate). Each new class starts 7 minutes after the one before it ends, so you'll mostly just type names.</div>
+    <div id="classList" class="classes"></div>
+    <button class="btn primary block" type="button" id="addAnother" style="margin-top:12px">+ Add another class</button>
+    <button class="btn ghost block hidden" type="button" id="copyAB" style="margin-top:10px">Copy A-day times to B day</button>
+    <div class="row" style="margin-top:10px">
+      <button class="btn ghost small" type="button" data-add="A">+ A day class</button>
+      <button class="btn ghost small" type="button" data-add="B">+ B day class</button>
+      <button class="btn ghost small" type="button" data-add="ALL">+ Every day class</button>
+    </div>
+    <details class="howto" id="rawBox"><summary>Show the text the reader found</summary><pre id="rawText" style="white-space:pre-wrap;font-size:13px;color:var(--muted);margin:8px 0 0">Nothing read yet.</pre></details>
+  </section>
+
+  <section class="card" id="s3">
+    <h2><span class="n">3</span>Set up your term</h2>
+    <p class="sub">Ayaama works out A and B days for you. The rotation skips weekends and days off.</p>
+    <fieldset>
+      <legend>School days</legend>
+      <div class="inline">
+        <div class="field"><label class="f" for="startDate">First day</label><input type="date" id="startDate"></div>
+        <div class="field"><label class="f" for="endDate">Last day</label><input type="date" id="endDate"></div>
+      </div>
+      <div class="field"><label class="f" for="startType">The first day is</label>
+        <select id="startType"><option value="A">an A day</option><option value="B">a B day</option><option value="NONE">No rotation (same classes every day)</option></select>
+      </div>
+      <label class="f">School meets on</label>
+      <div class="days" id="schoolDays"></div>
+      <div class="field" style="margin-top:14px"><label class="f">Days off (holidays, breaks, snow days)</label>
+        <div class="inline"><input type="date" id="offFrom" aria-label="Day off, or first day of a break"><input type="date" id="offTo" aria-label="Last day of a break (optional)"></div>
+        <p class="hint">Pick one date, or a first and last date for a break.</p>
+        <button class="btn ghost small" type="button" id="addOff" style="margin-top:8px">+ Add day off</button>
+        <div class="chips" id="offChips"></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Practice and activities</legend>
+      <div id="actList"></div>
+      <button class="btn ghost small" type="button" id="addAct">+ Add practice or activity</button>
+    </fieldset>
+    <fieldset>
+      <legend>Game days</legend>
+      <label class="chk"><input type="checkbox" id="gamesOn"><span>Add game day placeholders (all day, add times later)</span></label>
+      <div id="gamesBox">
+        <div class="field"><label class="f" for="gameName">Name</label><input type="text" id="gameName" placeholder="Game day"></div>
+        <label class="f">On</label><div class="days" id="gameDays"></div>
+        <label class="chk"><input type="checkbox" id="gameSkipOff"><span>Skip days off</span></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Reminders</legend>
+      <label class="chk"><input type="checkbox" id="rClass"><span>Alert before each class</span></label>
+      <div class="field" style="max-width:220px"><label class="f" for="rClassMin">Minutes before</label><input type="number" id="rClassMin" min="0" max="120" inputmode="numeric"></div>
+      <label class="chk"><input type="checkbox" id="rMorning"><span>Morning check: “Any quizzes or due work today?” on school days</span></label>
+      <div class="field" style="max-width:220px"><label class="f" for="rMorningTime">Time</label><input type="time" id="rMorningTime"></div>
+      <label class="chk"><input type="checkbox" id="rEvening"><span>Evening check: “Check assignments and quizzes” on school days and the night before school starts again</span></label>
+      <div class="field" style="max-width:220px"><label class="f" for="rEveningTime">Time</label><input type="time" id="rEveningTime"></div>
+      <label class="chk"><input type="checkbox" id="rHw"><span>Homework block</span></label>
+      <div class="inline">
+        <div class="field"><label class="f" for="hwStart">From</label><input type="time" id="hwStart"></div>
+        <div class="field"><label class="f" for="hwEnd">To</label><input type="time" id="hwEnd"></div>
+      </div>
+      <div class="field"><label class="f" for="hwOn">On</label>
+        <select id="hwOn"><option value="activity">Nights with practice or activities</option><option value="school">School nights (the night before a school day)</option><option value="both">Both</option></select>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Calendar</legend>
+      <div class="field"><label class="f" for="calName">Calendar name</label><input type="text" id="calName" placeholder="My School Schedule"></div>
+      <div class="field"><label class="f" for="tz">Time zone</label><select id="tz"></select><p class="hint">Picked from your device. Change it only if the school is in another time zone.</p></div>
+    </fieldset>
+  </section>
+
+  <section class="card" id="s4">
+    <h2><span class="n">4</span>Preview and download</h2>
+    <p class="sub">Here are your first two weeks. Check that the A and B days match the school's.</p>
+    <div id="warns"></div>
+    <div class="week" id="preview"></div>
+    <div class="dl">
+      <button class="btn primary block" type="button" id="dlBtn">⬇ Download my calendar (.ics)</button>
+      <button class="btn ghost block hidden" type="button" id="shareBtn">Send to my phone</button>
+      <p class="stat" id="stat"></p>
+    </div>
+    <details class="howto" open><summary>📱 iPhone: add it to Calendar</summary><ol>
+      <li>Open this page in <b>Safari</b> on the iPhone and tap <b>Download my calendar</b>. Or AirDrop, text, or email the file to the phone and tap it.</li>
+      <li>Tap <b>Add All</b>.</li>
+      <li>Choose a calendar (or make a new one called “School”), then tap <b>Done</b>.</li>
+      <li>To get alerts, allow notifications for Calendar in Settings → Notifications → Calendar.</li>
+    </ol></details>
+    <details class="howto"><summary>🤖 Android and Google Calendar</summary><ol>
+      <li>Download the file. On a phone it goes to <b>Downloads</b>. Importing is easiest from a computer.</li>
+      <li>Open <a href="https://calendar.google.com/calendar/r/settings/export" target="_blank" rel="noopener">Google Calendar → Settings → Import &amp; export</a>. Tip: make a new calendar first (Settings → Add calendar → Create new calendar) so you can remove everything at once later.</li>
+      <li>Choose the <code>.ics</code> file, pick the calendar, and click <b>Import</b>. It then shows up in the Google Calendar app on the phone.</li>
+      <li>Google Calendar doesn't keep alerts from imported files. To get alerts, open that calendar's settings and set default notifications (for example, 15 minutes before).</li>
+    </ol></details>
+    <details class="howto"><summary>Need to change something later?</summary><p style="margin:.5em 0 0">Your choices are saved on this device only. Come back, make changes, and download again. Before importing the new file, delete the old events (or the whole “School” calendar) so nothing shows up twice.</p></details>
+    <div class="row" style="margin-top:6px"><button class="btn quiet" type="button" id="resetBtn">Start over and clear saved info</button></div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <p class="ded">Named for Ayaama, who believed in being on time.</p>
+  <p>Ayaama reads your schedule on your device. No account, no uploads, nothing to sell. Always double-check against the school's official schedule.</p>
+</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js" defer></script>
+<script>
+/* ===================== AYAAMA CORE (pure logic, no DOM) ===================== */
+(function(root){
+'use strict';
+const pad = n => String(n).padStart(2,'0');
+const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/* ---- dates as YYYY-MM-DD strings (UTC math, so DST never shifts a day) ---- */
+function parseYMD(s){const [y,m,d]=s.split('-').map(Number);return Date.UTC(y,m-1,d)}
+function ymd(t){const d=new Date(t);return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDate())}
+function addDays(s,n){return ymd(parseYMD(s)+n*864e5)}
+function weekday(s){return new Date(parseYMD(s)).getUTCDay()}
+function niceDate(s){const d=new Date(parseYMD(s));return WD[d.getUTCDay()]+' '+MON[d.getUTCMonth()]+' '+d.getUTCDate()}
+function toMin(hhmm){if(!hhmm)return null;const [h,m]=hhmm.split(':').map(Number);if(isNaN(h)||isNaN(m))return null;return h*60+m}
+function fromMin(m){return pad(Math.floor(m/60)%24)+':'+pad(m%60)}
+function fmt12(hhmm){if(!hhmm)return'';let [h,m]=hhmm.split(':').map(Number);const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+pad(m)+' '+ap}
+
+/* ======================= OCR TEXT PARSER ======================= */
+const SUBJ = new Set(('math algebra geometry calculus precalculus statistics trigonometry english literature writing reading speaking speech public '+
+ 'history government civics economics psychology sociology philosophy science chemistry biology physics anatomy physiology environmental earth '+
+ 'health wellness physical education pe gym fitness weight training study hall lunch advisory homeroom seminar lab honors ap ib intro introduction '+
+ 'spanish french german latin chinese mandarin japanese italian arabic asl language art arts drawing painting ceramics sculpture photography design '+
+ 'music band chorus choir orchestra theater theatre drama dance computer computing coding programming engineering robotics technology tech media '+
+ 'film video broadcast journalism yearbook debate business accounting finance marketing culinary foods nutrition human services world global us '+
+ 'american european studies social creative ela esl career child development forensics astronomy geography digital graphic web cyber').split(/\s+/));
+const NOISE_EXACT = /^(today|tomorrow|yesterday|schedule|my schedule|class schedule|classes|courses|home|calendar|grades|assignments|attendance|more|menu|back|done|settings|messages|inbox|day|week|month|list|term|semester|quarter|trimester|[ab]\s*day|day\s*[ab12]|all day|now|next|details|view|edit|search|period|periods)$/i;
+const WEEKDAY_START = /^(mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)(day|nesday|sday|urday|rsday)?\b\.?(?:,|\s|$)/i;
+const MONTH_START = /^(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+\d/i;
+
+function normalizeOcr(text){
+  return String(text||'').replace(/\r/g,'')
+    .replace(/[\u2010-\u2015\u2212~]/g,'-')
+    .replace(/(\d)\s*[;\uFF1A\u2236]\s*(\d{2})/g,'$1:$2')
+    .replace(/(\d):(\d)[oO]\b/g,'$1:$20')
+    .replace(/(\d):[oO](\d)/g,'$1:0$2')
+    .replace(/(^|[^A-Za-z0-9])[lI|](\d):(\d{2})/g,'$11$2:$3')
+    .replace(/\b(\d{1,2}) ?: ?(\d{2})\b/g,'$1:$2')
+    .replace(/\b(\d{1,2})\.(\d{2})(?=\s*[AaPp]\.?\s?[Mm])/g,'$1:$2')
+    .replace(/[ \t\u00A0]+/g,' ');
+}
+
+const TIME_RE = /(^|[^\d:])(\d{1,2}):([0-5]\d)(?!\d)(?:\s*([AaPp])\.?\s?[Mm]\.?(?![A-Za-z]))?/g;
+const MER_RE = /(^|[\s\-(])([AaPp])\.?[Mm]\.?(?=[\s\-),.]|$)/g;
+
+const MER_START=/^\s*[^\w\s]?\s*[AaPp]\.?\s?[Mm]\.?(?![A-Za-z])/;
+/* OCR often drops the colon ("1027", "215"). Restore it when an AM/PM sits right after or on the next line. */
+function fixColonless(lines){
+  return lines.map((line,i)=>{
+    const m=line.match(/^(\s*[^\w\s]?\s*)(\d{1,2})[.,]?(\d{2})(?![\d:%.,])(.*)$/);
+    if(!m) return line;
+    const h=+m[2], mi=+m[3]; if(h<1||h>12||mi>59) return line;
+    if(/\b(room|rm|rn)\b/i.test(m[1])) return line;
+    const MER_ONLY=/^\s*[^\w\s]?\s*[AaPp]\.?\s?[Mm]\.?\s*$/;
+    const sameLine=MER_START.test(m[4]); const nextLine=MER_START.test(lines[i+1]||'')||(MER_ONLY.test(lines[i+2]||'')&&!/\d:\d\d/.test(lines[i+1]||''));
+    if(!sameLine&&!nextLine) return line;
+    return m[1]+m[2]+':'+m[3]+m[4];
+  });
+}
+/* "Algebra ll" -> "Algebra II" (OCR reads roman numerals as l / 1 / |) */
+function fixRoman(s){
+  return s.replace(/(\S\s)([lI|]{1,3})(?=\s|$)/g,(m,pre,r)=>pre+'I'.repeat(r.length)).replace(/(\S\s)([lI|]V)(?=\s|$)/g,(m,pre)=>pre+'IV');
+}
+function tokenizeLines(text){
+  const lines = fixColonless(normalizeOcr(text).split('\n').filter(l=>l.trim()));
+  const items=[]; const content=[];
+  lines.forEach((line,li)=>{
+    const found=[]; let m;
+    TIME_RE.lastIndex=0;
+    while((m=TIME_RE.exec(line))){
+      const start=m.index+m[1].length, h=+m[2], mi=+m[3];
+      if(h>23) continue;
+      found.push({type:'time',h,m:mi,mer:m[4]?m[4].toUpperCase():null,line:li,pos:start,len:m[0].length-m[1].length});
+    }
+    let masked=line;
+    found.forEach(f=>{masked=masked.slice(0,f.pos)+' '.repeat(f.len)+masked.slice(f.pos+f.len)});
+    MER_RE.lastIndex=0;
+    while((m=MER_RE.exec(masked))){
+      const start=m.index+m[1].length, len=m[0].length-m[1].length;
+      found.push({type:'mer',mer:m[2].toUpperCase(),line:li,pos:start,len});
+    }
+    found.sort((a,b)=>a.pos-b.pos);
+    let rest=line;
+    found.slice().sort((a,b)=>b.pos-a.pos).forEach(f=>{rest=rest.slice(0,f.pos)+' '+rest.slice(f.pos+f.len)});
+    rest=rest.replace(/\s(?:-|to|until|through)(?=\s)/gi,' ').replace(/^\s*(?:-|to)\s+/i,'').replace(/\s+(?:-|to)\s*$/i,'').replace(/\s+/g,' ').trim();
+    if(rest==='-') rest='';
+    items.push(...found); content.push(rest);
+  });
+  // a stand-alone AM/PM belongs to the closest earlier time that has none
+  for(let i=0;i<items.length;i++){
+    const it=items[i]; if(it.type!=='mer') continue;
+    for(let j=i-1;j>=0;j--){
+      const t=items[j]; if(t.type!=='time') continue;
+      if(it.line-t.line<=2 && !t.mer) t.mer=it.mer;
+      break;
+    }
+  }
+  return {times:items.filter(x=>x.type==='time'), content, lines};
+}
+
+/* Pick which times are starts and ends. OCR drops or garbles times, so instead of pairing
+   them blindly we score every reading (pair / start-only / skip) and keep the most plausible. */
+function timeMin(t){
+  if(t.h>12||t.h===0) return t.h*60+t.m;
+  const mer=t.mer||((t.h>=1&&t.h<=5)||t.h===12?'P':'A');
+  return (mer==='P'?(t.h%12)+12:(t.h%12))*60+t.m;
+}
+function findRanges(times,content){
+  const n=times.length; if(!n) return [];
+  const mins=times.map(timeMin);
+  const hasPeriod=times.map(t=>/\b(period|per|block)\b/i.test((content&&content[t.line])||''));
+  const memo=new Map();
+  function best(i,prevEnd){
+    if(i>=n) return {score:0,picks:[]};
+    const key=i+'|'+prevEnd; if(memo.has(key)) return memo.get(key);
+    let out=null; const consider=(score,picks)=>{ if(!out||score>out.score) out={score,picks}; };
+    // skip this time
+    { const r=best(i+1,prevEnd); consider(r.score-4,r.picks); }
+    const s=mins[i];
+    if(s>=prevEnd && s>=5*60 && s<=22*60){
+      const gapBonus=(prevEnd>0&&s-prevEnd<=15)?2:0, per=hasPeriod[i]?2:0;
+      // a full start-end pair
+      if(i+1<n && times[i+1].line-times[i].line<=5){
+        const e=mins[i+1], d=e-s;
+        if(d>=5&&d<=300){
+          const r=best(i+2,e);
+          const sc=(d>=20&&d<=240?10:2)+gapBonus+per-(hasPeriod[i+1]&&times[i+1].line!==times[i].line?3:0);
+          consider(r.score+sc,[{a:i,b:i+1,start:s,end:e},...r.picks]);
+        }
+      }
+      // a start whose end time went missing
+      { const r=best(i+1,s+1); consider(r.score+3+gapBonus+per-(i===n-1?3:0),[{a:i,b:null,start:s,end:null},...r.picks]); }
+    }
+    memo.set(key,out); return out;
+  }
+  const picks=best(0,0).picks;
+  // fill in missing end times from the school's own rhythm
+  const known=picks.filter(p=>p.end!=null);
+  const durs=known.map(p=>p.end-p.start).sort((x,y)=>x-y), med=durs.length?durs[Math.floor(durs.length/2)]:50;
+  const gaps=[]; for(let k=0;k+1<picks.length;k++){ if(picks[k].end!=null) gaps.push(picks[k+1].start-picks[k].end); }
+  const g=gaps.filter(x=>x>=0&&x<=20).sort((x,y)=>x-y), pass=g.length?g[Math.floor(g.length/2)]:5;
+  return picks.map((p,k)=>{
+    let end=p.end, guessed=false;
+    if(end==null){ guessed=true; const nx=picks[k+1]; end=nx?nx.start-pass:p.start+med; if(end-p.start<5) end=p.start+Math.min(med,nx?nx.start-p.start:med); }
+    return {start:fromMin(p.start),end:fromMin(Math.min(end,23*60)),startLine:times[p.a].line,endLine:p.b!=null?times[p.b].line:times[p.a].line,guessed};
+  });
+}
+
+function isNoise(s){
+  if(!s) return true;
+  const t=s.trim(); if(t.length<3) return true;
+  const letters=(t.match(/[A-Za-z]/g)||[]).length;
+  if(letters<3 || letters/t.replace(/\s/g,'').length<0.55) return true;
+  if(NOISE_EXACT.test(t)||WEEKDAY_START.test(t)||MONTH_START.test(t)) return true;
+  if(/\b(LTE|5G|4G|wifi|battery)\b|%/i.test(t)) return true;
+  if(/^(periods?|blocks?)\s*\d+\s*(-|to)\s*\d+$/i.test(t)) return true;
+  if((t.match(/\b(home|grades|schedule|more|calendar|messages|settings|attendance|assignments|inbox|profile|menu)\b/gi)||[]).length>=2) return true;
+  return false;
+}
+function cleanText(s){
+  s=String(s).replace(/^\s*[^\w\s]*\s*[a-z]{1,2}\s+(?=[A-Z])/,'');
+  s=fixRoman(s.replace(/^[^A-Za-z0-9]+/,'').replace(/\s+$/,''));
+  s=s.replace(/[^A-Za-z0-9)]+$/,'');
+  if(s.includes(')')&&!s.includes('(')) s=s.replace(/\)/g,'');
+  if(s.includes('(')&&!s.includes(')')) s=s.replace(/\(/g,'');
+  return s
+    .replace(/(^|\s)[^A-Za-z0-9\s()&'.,\-\/]+(?=\s|$)/g,'')
+    .replace(/\s+[a-z]$/,'').replace(/\s{2,}/g,' ').trim();
+}
+function wordsOf(s){return s.toLowerCase().replace(/[^a-z\s\-]/g,' ').split(/\s+/).filter(Boolean)}
+function hasSubject(s){return wordsOf(s).some(w=>SUBJ.has(w))}
+function personLike(s){
+  const t=(s||'').trim();
+  if(!t||/\d/.test(t)) return false;
+  if(/^(mr|mrs|ms|miss|dr|mx|coach)\.?\s+[A-Z]/i.test(t)) return true;
+  if(/^[A-Z]\.\s?[A-Z][a-z'\-]+$/.test(t)) return true;
+  if(/^[A-Z][A-Za-z'\-]+,\s*[A-Z][A-Za-z'\-]+(\s[A-Z]\.?)?$/.test(t)) return !hasSubject(t);
+  const w=t.split(/\s+/);
+  if(w.length<2||w.length>4) return false;
+  if(!w.every(x=>/^[A-Z][a-z'\-]+\.?$|^[A-Z]\.$|^[A-Z][A-Z'\-]+$/.test(x))) return false;
+  return !hasSubject(t);
+}
+function fixTeacher(s){
+  const m=s.match(/^([A-Z][A-Za-z'\-]+),\s*([A-Z][A-Za-z'\-]+(?:\s[A-Z]\.?)?)$/);
+  return m?(m[2]+' '+m[1]):s;
+}
+const PERIOD_RE=/\b(?:period|per|pd|block|blk)\b\.?\s*[:#]?\s*(\d{1,2})\b/i, PERIOD_RE2=/\b(\d{1,2})(?:st|nd|rd|th)\s+(?:period|block)\b/i;
+const ROOM_RE=/\b(?:room|rm|rn|location|loc)\b\.?\s*[:#.]?\s*([A-Za-z0-9][A-Za-z0-9\-\/]*)/i;
+
+const TEACHER_TAIL=/(?:^|\s)((?:mr|mrs|ms|miss|dr|mx|coach)\.?\s+[A-Z][A-Za-z'\-]+|[A-Z][A-Za-z'\-]+,\s*[A-Z][A-Za-z'\-]+(?:\s[A-Z]\.?)?|[A-Z]\.\s?[A-Z][A-Za-z'\-]+)$/;
+function classifyBlock(lines){
+  const out={name:'',room:'',teacher:'',period:'',cands:[]};
+  const take=(str,m)=>[str.slice(0,m.index),str.slice(m.index+m[0].length)];
+  for(const raw of lines){
+    let s=(raw||'').trim(); if(!s) continue; let m;
+    if(!out.period&&(m=s.match(/^(\d{1,2})\s+(?=[A-Za-z]{2})/))&&!PERIOD_RE.test(s)){ out.period=m[1]; s=s.slice(m[0].length); }
+    let parts=[s];
+    const splitOn=(re,fn)=>{ const next=[]; parts.forEach(p=>{ const mm=p.match(re); if(mm&&fn(mm)!==false){ next.push(...take(p,mm)); } else next.push(p); }); parts=next; };
+    splitOn(PERIOD_RE,mm=>{ if(out.period) return false; out.period=mm[1]; });
+    if(!out.period) splitOn(PERIOD_RE2,mm=>{ out.period=mm[1]; });
+    splitOn(ROOM_RE,mm=>{ const v=mm[1].replace(/[.,;:]+$/,''); if(/^(teacher|time|course|class|name|number)$/i.test(v)) return false; if(!out.room) out.room=v; });
+    // table rows: "1  World History  214  Rivera, Ana"
+    if(!out.room) splitOn(/\s([A-Z]?\d{3,4}[A-Z]?)(?=\s+\S)/,mm=>{ out.room=mm[1]; });
+    const next=[];
+    parts.forEach(p=>{
+      p=p.replace(/([A-Za-z]\s)([lI|]{1,3})\s*$/,(m,pre,r)=>pre+'I'.repeat(r.length));
+      p.split(/\s*[·•|]\s*/).forEach(q=>{
+        q=q.trim(); if(!q) return;
+        const tm=q.match(/^(?:teacher|instructor|staff)\s*[:\-]?\s*(.+)$/i);
+        if(tm){ if(!out.teacher) out.teacher=fixTeacher(cleanText(tm[1])); return; }
+        const dash=q.match(/^(.*\S)\s+-\s+(.+)$/); if(dash&&personLike(cleanText(dash[2]))){ next.push(dash[1],dash[2]); return; }
+        const tt=q.match(TEACHER_TAIL); if(tt&&tt.index>0&&/[A-Za-z]{3}/.test(q.slice(0,tt.index))){ next.push(q.slice(0,tt.index),tt[1]); return; }
+        next.push(q);
+      });
+    });
+    next.forEach(q=>{ q=cleanText(q.replace(/^(?:course|class|subject)\s*[:\-]\s*/i,'')); if(!isNoise(q)) out.cands.push(q); });
+  }
+  const c=out.cands.slice();
+  if(c.length>=2 && personLike(c[0]) && !personLike(c[1])) [c[0],c[1]]=[c[1],c[0]];
+  if(c.length) out.name=c[0];
+  if(!out.teacher){ const t=c.slice(1).find(personLike); if(t) out.teacher=fixTeacher(t); }
+  return out;
+}
+
+function scoreBlocks(blocks){
+  let s=0;
+  blocks.forEach(b=>{ if(b.name) s+=2; if(b.room) s+=1; if(b.teacher) s+=1; if(b.cands.length>3) s-=1; if(b.name&&hasSubject(b.name)) s+=1; if(b.name&&personLike(b.name)) s-=2; });
+  return s;
+}
+const LONE_PERIOD=/^\s*(?:period|per|block)\s*\d{1,2}\s*$/i;
+
+function parseScheduleText(text){
+  const {times,content}=tokenizeLines(text);
+  const ranges=findRanges(times,content);
+  if(!ranges.length) return {classes:[],score:0,ranges:0,layout:'none'};
+  const N=ranges.length, L=content.length;
+  const cands={};
+  // Layout "after": details on the time's line and below it
+  cands.after=ranges.map((r,k)=>{
+    const from=r.startLine, to=k+1<N?ranges[k+1].startLine:Math.min(L,r.endLine+6);
+    const ls=content.slice(from,to);
+    while(k+1<N && ls.length && LONE_PERIOD.test(ls[ls.length-1])) ls.pop();
+    for(let j=from-1;j>=Math.max(0,from-2);j--){ if(LONE_PERIOD.test(content[j]||'')){ ls.unshift(content[j]); break; } }
+    return classifyBlock(ls);
+  });
+  // Layout "before": details above the time
+  cands.before=ranges.map((r,k)=>{
+    const from=k>0?ranges[k-1].endLine+1:Math.max(0,r.startLine-6), to=r.endLine+1;
+    return classifyBlock(content.slice(from,to));
+  });
+  // Layout "columns": OCR read the time column on its own; anchor records on Room lines
+  const all=content.map(s=>s.trim()).filter(s=>s&&!(isNoise(cleanText(s))&&!ROOM_RE.test(s)&&!PERIOD_RE.test(s)));
+  const roomIdx=[]; all.forEach((s,i)=>{if(ROOM_RE.test(s)) roomIdx.push(i)});
+  if(roomIdx.length>=2){
+    cands.columns=ranges.map((r,k)=>{
+      const ri=roomIdx[k]; if(ri==null) return classifyBlock([]);
+      const lo=k>0?roomIdx[k-1]+1:0;
+      const pre=all.slice(lo,ri);
+      const ls=[];
+      // previous record's teacher sits right after its room line: skip it
+      let start=0; if(k>0 && pre.length>1 && personLike(cleanText(pre[0]))) start=1;
+      const body=pre.slice(start);
+      const per=body.filter(x=>PERIOD_RE.test(x)&&cleanText(x.replace(PERIOD_RE,'')).length<3);
+      const real=body.filter(x=>!per.includes(x)&&!isNoise(cleanText(x)));
+      ls.push(...per.slice(-1), ...real.slice(-1));
+      ls.push(all[ri]);
+      const nxt=all[ri+1]; if(nxt && personLike(cleanText(nxt))) ls.push(nxt);
+      return classifyBlock(ls);
+    });
+  }
+  let layout='after', best=cands.after, bestScore=scoreBlocks(cands.after);
+  for(const k of ['before','columns']){ if(!cands[k]) continue; const sc=scoreBlocks(cands[k]); if(sc>bestScore){best=cands[k];bestScore=sc;layout=k;} }
+  const classes=ranges.map((r,k)=>{
+    const b=best[k]||{};
+    return {name:b.name||'',start:r.start,end:r.end,room:b.room||'',teacher:b.teacher||'',period:b.period||'',endGuessed:!!r.guessed};
+  });
+  return {classes,score:bestScore,ranges:N,layout};
+}
+
+/* ======================= SCHEDULE BUILDER ======================= */
+function validClass(c){return c&&c.start&&c.end&&toMin(c.end)>toMin(c.start)&&String(c.name||'').trim()}
+function usesRotation(st){return st.settings.startType!=='NONE' && st.classes.some(c=>c.dayType==='A'||c.dayType==='B')}
+function schoolDayList(st){
+  const S=st.settings, out=[];
+  if(!S.startDate||!S.endDate||S.endDate<S.startDate) return out;
+  const off=new Set(S.daysOff||[]), rot=usesRotation(st);
+  let type=S.startType==='B'?'B':'A';
+  for(let d=S.startDate; d<=S.endDate; d=addDays(d,1)){
+    if(!S.schoolDays.includes(weekday(d))||off.has(d)) continue;
+    out.push({date:d,type:rot?type:null});
+    if(rot) type=type==='A'?'B':'A';
+  }
+  return out;
+}
+function classesFor(st,type){
+  return st.classes.filter(c=>validClass(c)&&(c.dayType==='ALL'||type===null||c.dayType===type))
+    .sort((a,b)=>toMin(a.start)-toMin(b.start));
+}
+function buildDays(st, fromDate, toDate){
+  const S=st.settings, R=st.reminders;
+  const byDate={}; schoolDayList(st).forEach(x=>byDate[x.date]=x);
+  const off=new Set(S.daysOff||[]);
+  const ends=st.classes.filter(validClass).map(c=>toMin(c.end));
+  const typicalEnd=ends.length?Math.max(...ends):15*60;
+  const days=[]; const from=fromDate||S.startDate, to=toDate||S.endDate;
+  if(!from||!to) return days;
+  for(let d=from; d<=to; d=addDays(d,1)){
+    const wd=weekday(d), sch=byDate[d], next=byDate[addDays(d,1)];
+    const inTerm=d>=S.startDate&&d<=S.endDate;
+    const cl=sch?classesFor(st,sch.type):[];
+    const day={date:d,wd,inTerm,school:!!sch,type:sch?sch.type:null,off:inTerm&&off.has(d),classes:cl,acts:[],game:null,morning:null,evening:null,hw:null,nextSchool:next||null};
+    if(inTerm){
+      (st.activities||[]).forEach(a=>{
+        if(!a.days||!a.days.includes(wd)) return;
+        if(a.skipOff!==false && off.has(d)) return;
+        const s=a.afterSchool?(cl.length?Math.max(...cl.map(c=>toMin(c.end))):typicalEnd):toMin(a.start);
+        const e=toMin(a.end); if(s==null||e==null||e<=s) return;
+        day.acts.push({name:a.name||'Practice',start:fromMin(s),end:fromMin(e),afterSchool:!!a.afterSchool,assumed:!!a.afterSchool&&!cl.length,alert:+a.alert||0,location:a.location||''});
+      });
+      const g=st.games;
+      if(g&&g.on&&g.days.includes(wd)&&!(g.skipOff!==false&&off.has(d))) day.game={name:g.name||'Game day'};
+    }
+    if(R.morning&&R.morningTime&&sch) day.morning=R.morningTime;
+    if(R.evening&&R.eveningTime&&(sch||next)) day.evening=R.eveningTime;
+    if(R.hw&&R.hwStart&&R.hwEnd&&toMin(R.hwEnd)>toMin(R.hwStart)&&(inTerm||next)){
+      const actNight=day.acts.length>0, schNight=!!next;
+      if((R.hwOn==='activity'&&actNight)||(R.hwOn==='school'&&schNight)||(R.hwOn==='both'&&(actNight||schNight))) day.hw={start:R.hwStart,end:R.hwEnd};
+    }
+    days.push(day);
+  }
+  return days;
+}
+
+/* ======================= ICS GENERATOR (RFC 5545) ======================= */
+function icsEscape(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n')}
+function utf8len(ch){const c=ch.codePointAt(0);return c<0x80?1:c<0x800?2:c<0x10000?3:4}
+function fold(line){
+  const out=[]; let cur='', bytes=0;
+  for(const ch of line){
+    const b=utf8len(ch);
+    if(bytes+b>75){ out.push(cur); cur=' '+ch; bytes=1+b; } else { cur+=ch; bytes+=b; }
+  }
+  out.push(cur); return out.join('\r\n');
+}
+const dtfCache={};
+function tzOffsetMin(tz,date){
+  const dtf=dtfCache[tz]||(dtfCache[tz]=new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}));
+  const p={}; for(const x of dtf.formatToParts(date)) p[x.type]=x.value;
+  const asUTC=Date.UTC(+p.year,+p.month-1,+p.day,(+p.hour)%24,+p.minute,+p.second);
+  return Math.round((asUTC-Math.floor(date.getTime()/1000)*1000)/60000);
+}
+function fmtOff(m){const s=m<0?'-':'+';m=Math.abs(m);return s+pad(Math.floor(m/60))+pad(m%60)}
+function utcStamp(t){return new Date(t).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}
+/* Builds a VTIMEZONE from the browser's own tz database: one observance per real transition. */
+function buildVTimezone(tz,fromYear,toYear){
+  const H=3*3600e3, start=Date.UTC(fromYear,0,1), end=Date.UTC(toYear+1,0,1);
+  let prev=tzOffsetMin(tz,new Date(start)); const initial=prev, trans=[];
+  for(let t=start+H;t<=end;t+=H){
+    const o=tzOffsetMin(tz,new Date(t));
+    if(o!==prev){
+      let lo=t-H,hi=t;
+      while(hi-lo>60000){ const mid=lo+Math.floor((hi-lo)/120000)*60000; if(mid<=lo)break; if(tzOffsetMin(tz,new Date(mid))===prev) lo=mid; else hi=mid; }
+      trans.push({at:hi,from:prev,to:o}); prev=o;
+    }
+  }
+  const std=Math.min(initial,...trans.map(x=>x.to));
+  const L=['BEGIN:VTIMEZONE','TZID:'+tz];
+  const comp=(kind,dt,from,to)=>L.push('BEGIN:'+kind,'DTSTART:'+dt,'TZOFFSETFROM:'+fmtOff(from),'TZOFFSETTO:'+fmtOff(to),'END:'+kind);
+  comp(initial>std?'DAYLIGHT':'STANDARD','19700101T000000',initial,initial);
+  trans.forEach(x=>comp(x.to>x.from?'DAYLIGHT':'STANDARD',utcStamp(x.at+x.from*60000).replace('Z',''),x.from,x.to));
+  L.push('END:VTIMEZONE'); return L;
+}
+function rid(){ try{ if(root.crypto&&root.crypto.randomUUID) return root.crypto.randomUUID(); }catch(e){} return 'x'+Math.random().toString(36).slice(2)+Date.now().toString(36); }
+function roomLabel(r){ r=String(r||'').trim(); if(!r) return ''; if(/^room\b/i.test(r)) return r; return /^[A-Za-z]?-?\d/.test(r)?'Room '+r:r; }
+
+function buildICS(st,opts){
+  opts=opts||{};
+  const S=st.settings, tz=S.tz||'UTC', R=st.reminders;
+  const stamp=utcStamp(opts.now||Date.now()), batch=opts.batchId||rid();
+  const days=buildDays(st, addDays(S.startDate,-1), S.endDate);
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Ayaama//Schedule to Calendar 1.0//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH',
+    'X-WR-CALNAME:'+icsEscape(S.calName||'My School Schedule'),'X-WR-TIMEZONE:'+tz,
+    'X-WR-CALDESC:'+icsEscape('Made with Ayaama. Snap your schedule. Stay on time.')];
+  L.push(...buildVTimezone(tz,+S.startDate.slice(0,4)-1,+S.endDate.slice(0,4)+1));
+  let n=0; const counts={classes:0,activities:0,games:0,morning:0,evening:0,homework:0,dayoff:0};
+  const dt=(d,hhmm)=>d.replace(/-/g,'')+'T'+hhmm.replace(':','')+'00';
+  const ev=o=>{
+    n++; L.push('BEGIN:VEVENT','UID:'+batch+'-'+n+'@ayaama.app','DTSTAMP:'+stamp);
+    if(o.allDay) L.push('DTSTART;VALUE=DATE:'+o.date.replace(/-/g,''),'DTEND;VALUE=DATE:'+addDays(o.date,1).replace(/-/g,''));
+    else L.push('DTSTART;TZID='+tz+':'+dt(o.date,o.start),'DTEND;TZID='+tz+':'+dt(o.date,o.end));
+    L.push('SUMMARY:'+icsEscape(o.summary));
+    if(o.location) L.push('LOCATION:'+icsEscape(o.location));
+    if(o.description) L.push('DESCRIPTION:'+icsEscape(o.description));
+    if(o.categories) L.push('CATEGORIES:'+o.categories.map(icsEscape).join(','));
+    if(o.transparent) L.push('TRANSP:TRANSPARENT');
+    if(o.alarm!=null){ const m=+o.alarm||0; L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEscape(o.alarmText||o.summary),'TRIGGER:'+(m>0?'-PT'+m+'M':'PT0M'),'END:VALARM'); }
+    L.push('END:VEVENT');
+  };
+  const listFor=cls=>cls.map(c=>'• '+c.name+(c.room?' ('+roomLabel(c.room)+')':'')).join('\n');
+  const endPlus=(t,k)=>fromMin(Math.min(toMin(t)+k,1439));
+  days.forEach(day=>{
+    const inTerm=day.inTerm;
+    if(inTerm&&day.school) day.classes.forEach(c=>{
+      const bits=[]; if(c.period) bits.push('Period '+c.period); if(day.type) bits.push(day.type+' day'); if(c.teacher) bits.push(c.teacher);
+      const mins=+R.classMin||0;
+      ev({date:day.date,start:c.start,end:c.end,summary:c.name,location:roomLabel(c.room),description:bits.join(' · '),categories:['Class'],
+        alarm:R.classAlert?mins:null,alarmText:mins>0?c.name+' starts in '+mins+' minutes':c.name+' is starting'});
+      counts.classes++;
+    });
+    if(inTerm&&day.off&&st.settings.schoolDays.includes(day.wd)){ ev({date:day.date,allDay:true,summary:'No school',categories:['Day off'],transparent:true}); counts.dayoff++; }
+    if(inTerm) day.acts.forEach(a=>{
+      ev({date:day.date,start:a.start,end:a.end,summary:a.name,location:a.location,description:a.assumed?'No school today, so this uses the usual end of the school day. Check the start time.':a.afterSchool?'Starts when school ends.':'',categories:['Activity'],
+        alarm:a.alert>0?a.alert:null,alarmText:a.name+' starts in '+a.alert+' minutes'}); counts.activities++;
+    });
+    if(inTerm&&day.game){ ev({date:day.date,allDay:true,summary:day.game.name+' (add start time)',description:'Placeholder: edit this event once you know the game time and place.',categories:['Game'],transparent:true}); counts.games++; }
+    if(day.morning){
+      ev({date:day.date,start:day.morning,end:endPlus(day.morning,10),summary:'Any quizzes or due work today?',
+        description:(day.type?'Today is a '+day.type+' day.\n':'')+'Quick check before you leave:\n'+listFor(day.classes)+'\nPack what you need.',
+        categories:['Reminder'],alarm:0,alarmText:'Any quizzes or due work today?',transparent:true}); counts.morning++;
+    }
+    if(day.evening){
+      let desc='Look in each class for homework, projects, and quizzes.';
+      if(day.nextSchool) desc+='\nTomorrow'+(day.nextSchool.type?' ('+day.nextSchool.type+' day)':'')+':\n'+listFor(classesFor(st,day.nextSchool.type));
+      if(day.school&&inTerm) desc+='\nToday'+(day.type?' ('+day.type+' day)':'')+':\n'+listFor(day.classes);
+      desc+='\nAdd anything due to your calendar so nothing sneaks up on you.';
+      ev({date:day.date,start:day.evening,end:endPlus(day.evening,10),summary:'Check assignments and quizzes',description:desc,categories:['Reminder'],alarm:0,alarmText:'Check assignments and quizzes',transparent:true}); counts.evening++;
+    }
+    if(day.hw){ ev({date:day.date,start:day.hw.start,end:day.hw.end,summary:'Homework time',description:'Start with whatever is due first.',categories:['Homework']}); counts.homework++; }
+  });
+  L.push('END:VCALENDAR');
+  return {text:L.map(fold).join('\r\n')+'\r\n',count:n,counts};
+}
+
+root.Ayaama={normalizeOcr,tokenizeLines,findRanges,parseScheduleText,classifyBlock,personLike,schoolDayList,buildDays,buildICS,buildVTimezone,tzOffsetMin,fold,icsEscape,addDays,weekday,niceDate,fmt12,toMin,fromMin,roomLabel,validClass};
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+<script>
+/* ===================== AYAAMA UI ===================== */
+(function(){
+'use strict';
+const A=window.Ayaama, $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const KEY='ayaama.v1', WDS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function todayLocal(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function defaults(){
+  let start=todayLocal(); while([0,6].includes(A.weekday(start))) start=A.addDays(start,1);
+  let tz='UTC'; try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'}catch(e){}
+  return {classes:[],
+    settings:{startDate:start,endDate:A.addDays(start,60),startType:'A',schoolDays:[1,2,3,4,5],daysOff:[],tz,calName:'My School Schedule'},
+    activities:[],
+    games:{on:false,name:'Game day',days:[5,6],skipOff:true},
+    reminders:{classAlert:true,classMin:15,morning:true,morningTime:'07:00',evening:true,eveningTime:'19:30',hw:true,hwStart:'19:30',hwEnd:'21:00',hwOn:'activity'}};
+}
+let state=defaults();
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&s.settings){ const d=defaults(); state={...d,...s,settings:{...d.settings,...s.settings},reminders:{...d.reminders,...s.reminders},games:{...d.games,...s.games}}; }}catch(e){}
+const images=[];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2800)}
+
+/* ---------- Step 1: pictures ---------- */
+function addFiles(files){
+  if(state.mode!=='upload'){ state.mode='upload'; save(); applyMode(); }
+  Array.from(files).filter(f=>/^image\//.test(f.type)||/\.(jpe?g|png|webp|gif|bmp)$/i.test(f.name)).forEach(f=>{
+    images.push({id:uid(),file:f,url:URL.createObjectURL(f),dayType:'A',status:'Ready to read',progress:0});
+  });
+  // sensible defaults: 1 picture = every day, 2 = A then B
+  if(images.length===1&&!images[0].touched) images[0].dayType='ALL';
+  if(images.length>=2){ images.forEach((im,i)=>{ if(!im.touched) im.dayType=i===0?'A':i===1?'B':'ALL'; }); }
+  renderThumbs();
+}
+function renderThumbs(){
+  $('#thumbs').innerHTML=images.map(im=>`<div class="thumb" data-id="${im.id}">
+    <img src="${im.url}" alt="Schedule picture">
+    <div class="meta"><div class="nm">${esc(im.file.name)}</div>
+      <div class="seg" role="group" aria-label="Which days is this picture for?">${['A','B','ALL'].map(t=>`<button type="button" data-t="${t}" class="${im.dayType===t?'on':''}" aria-pressed="${im.dayType===t}">${t==='ALL'?'Every day':t+' day'}</button>`).join('')}</div>
+      <div class="st ${/^Found/.test(im.status)?'ok':/^Could/.test(im.status)?'err':''}">${esc(im.status)}</div>
+      ${im.progress>0&&im.progress<1?`<div class="bar" role="progressbar" aria-valuenow="${Math.round(im.progress*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.round(im.progress*100)}%"></i></div>`:''}
+    </div>
+    <button class="btn quiet" type="button" data-del aria-label="Remove picture">✕</button></div>`).join('');
+  $('#readBtn').classList.toggle('hidden',!images.some(i=>!i.done));
+}
+$('#thumbs').addEventListener('click',e=>{
+  const card=e.target.closest('.thumb'); if(!card) return; const im=images.find(x=>x.id===card.dataset.id);
+  if(e.target.dataset.t){ im.dayType=e.target.dataset.t; im.touched=true; state.classes.filter(c=>c.src===im.id).forEach(c=>c.dayType=im.dayType); sortClasses(); renderThumbs(); renderClasses(); save(); refresh(); }
+  if(e.target.hasAttribute('data-del')){ images.splice(images.indexOf(im),1); renderThumbs(); }
+});
+$('#file').addEventListener('change',e=>{addFiles(e.target.files); e.target.value='';});
+const drop=$('#drop');
+['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+/* ---------- Two equal ways in: upload or type ---------- */
+function applyMode(){
+  const m=state.mode||null;
+  $$('.choice').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===m)));
+  $('#uploadPane').classList.toggle('hidden',m!=='upload');
+  $('#manualPane').classList.toggle('hidden',m!=='manual');
+  $('#manualHint').classList.toggle('hidden',m!=='manual');
+  $('#rawBox').classList.toggle('hidden',m==='manual'&&!images.some(i=>i.raw));
+  $('#s2sub').textContent=m==='manual'?'Add each class with its start and end time. Room and teacher are optional.':'Look over each class and fix anything that looks off. Picture readers make mistakes, so this step matters.';
+}
+function goList(){ const el=$('#s2'); el.scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(()=>{ const blank=$$('.cls input[data-k=name]').find(i=>!i.value); (blank||$('#addAnother')).focus({preventScroll:true}); },350); }
+function setMode(m,{jump=true}={}){
+  state.mode=m; save(); applyMode();
+  if(m==='manual'){ if(!state.classes.length) addClass('A',{focus:false}); if(jump) goList(); }
+}
+$$('.choice').forEach(b=>b.addEventListener('click',()=>{
+  const m=b.dataset.mode; setMode(m);
+  if(m==='upload'&&!images.length){ try{ $('#file').click(); }catch(e){} }
+}));
+$('#toList').addEventListener('click',goList);
+
+/* OCR, all in the browser */
+let worker=null, currentImg=null;
+async function getWorker(){
+  if(worker) return worker;
+  for(let i=0;i<75&&!window.Tesseract;i++) await new Promise(r=>setTimeout(r,200));
+  if(!window.Tesseract) throw new Error('the text reader did not load. Check your internet connection, or type your classes in below.');
+  worker=await Tesseract.createWorker('eng',1,{logger:m=>{ if(currentImg&&m.status==='recognizing text'){ currentImg.progress=Math.max(.1,Math.min(.99,currentImg.base+currentImg.span*m.progress)); renderThumbs(); } }});
+  return worker;
+}
+function loadImg(url){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('this picture could not be opened. Try a PNG or JPG screenshot.'));i.src=url})}
+async function prep(url){
+  const img=await loadImg(url);
+  const w=img.naturalWidth,h=img.naturalHeight, k=w<1100?2:(w>2600?2600/w:1);
+  const c=document.createElement('canvas'); c.width=Math.round(w*k); c.height=Math.round(h*k);
+  const x=c.getContext('2d'); x.imageSmoothingQuality='high'; x.drawImage(img,0,0,c.width,c.height);
+  const d=x.getImageData(0,0,c.width,c.height), p=d.data; let sum=0;
+  for(let i=0;i<p.length;i+=4){const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];p[i]=p[i+1]=p[i+2]=g;sum+=g}
+  if(sum/(p.length/4)<110) for(let i=0;i<p.length;i+=4){p[i]=p[i+1]=p[i+2]=255-p[i]} // dark mode -> light
+  x.putImageData(d,0,0); return c;
+}
+const quality=r=>r.classes.filter(c=>c.name).length*3+r.classes.filter(c=>c.room).length+r.classes.filter(c=>c.teacher).length+r.score;
+const complete=r=>r.classes.length>0&&r.classes.length%2===0&&r.classes.every(c=>c.name&&c.room&&c.teacher)||r.classes.length>0&&r.classes.every(c=>c.name&&c.room&&c.teacher)&&r.classes.length>=3;
+async function readImage(im){
+  currentImg=im; im.status='Loading the reader…'; im.progress=.05; im.base=.05; im.span=.3; renderThumbs();
+  const w=await getWorker();
+  im.status='Reading…'; renderThumbs();
+  // Try a few reading strategies and keep the one that makes the most sense.
+  const tries=[{src:'orig',psm:'3'},{src:'prep',psm:'3'},{src:'prep',psm:'6'},{src:'orig',psm:'6'}];
+  let best=null, prepped=null;
+  for(let i=0;i<tries.length;i++){
+    const t=tries[i]; im.base=.05+.95*i/tries.length; im.span=.95/tries.length;
+    if(i>0){ im.status='Taking a closer look…'; renderThumbs(); }
+    let src=im.url; if(t.src==='prep'){ prepped=prepped||await prep(im.url); src=prepped; }
+    await w.setParameters({tessedit_pageseg_mode:t.psm});
+    const r=await w.recognize(src); const res=A.parseScheduleText(r.data.text); res.raw=r.data.text;
+    if(!best||quality(res)>quality(best)) best=res;
+    if(complete(best)) break;
+  }
+  im.raw=best.raw; im.progress=1; currentImg=null; return best;
+}
+async function readAll(){
+  if(state.mode!=='upload') setMode('upload',{jump:false});
+  const btn=$('#readBtn'); btn.disabled=true; btn.textContent='Reading…';
+  let total=0;
+  for(const im of images){
+    if(im.done) continue;
+    try{
+      const res=await readImage(im);
+      state.classes=state.classes.filter(c=>c.src!==im.id);
+      res.classes.forEach(c=>state.classes.push({id:uid(),src:im.id,dayType:im.dayType,...c,flag:!c.name||!c.room||!c.teacher||c.endGuessed}));
+      im.status=res.classes.length?`Found ${res.classes.length} class${res.classes.length>1?'es':''}`:'Could not find class times here. You can type them in below.';
+      im.done=true; total+=res.classes.length;
+    }catch(err){ im.status='Could not read it: '+(err&&err.message||err); im.progress=0; currentImg=null; }
+    renderThumbs();
+  }
+  // A and B days usually share bell times. If one image disagrees, ask the user to look.
+  const byStart={}; state.classes.forEach(c=>{ (byStart[c.start]=byStart[c.start]||[]).push(c); });
+  Object.values(byStart).forEach(list=>{ const ends=new Set(list.map(c=>c.end)); if(ends.size>1) list.forEach(c=>{ c.flag=true; c.endCheck=true; }); });
+  btn.disabled=false; btn.textContent='Read my schedule';
+  $('#rawText').textContent=images.filter(i=>i.raw).map(i=>'— '+i.file.name+' —\n'+i.raw.trim()).join('\n\n')||'Nothing read yet.';
+  if(!state.classes.length) addClass(images[0]?images[0].dayType:'A');
+  sortClasses(); renderClasses(); refresh(); save();
+  $('#s2').scrollIntoView({behavior:'smooth'});
+  if(total) toast(`Found ${total} classes. Please check them over.`);
+  return total;
+}
+$('#readBtn').addEventListener('click',readAll);
+
+/* ---------- Step 2: classes ---------- */
+/* Suggest times: 7 minutes after the previous class of that day ends, same length.
+   First class of a day type copies the earliest class of any day, else 8:00-8:50. */
+function suggestTimes(t){
+  const ok=c=>A.toMin(c.start)!=null&&A.toMin(c.end)!=null&&A.toMin(c.end)>A.toMin(c.start);
+  const same=state.classes.filter(c=>c.dayType===t&&ok(c)).sort((a,b)=>A.toMin(a.start)-A.toMin(b.start));
+  if(same.length){ const p=same[same.length-1], dur=A.toMin(p.end)-A.toMin(p.start), s=A.toMin(p.end)+7; if(s+dur<=23*60) return {start:A.fromMin(s),end:A.fromMin(s+dur)}; return {start:'',end:''}; }
+  const any=state.classes.filter(ok).sort((a,b)=>A.toMin(a.start)-A.toMin(b.start));
+  if(any.length) return {start:any[0].start,end:any[0].end};
+  return {start:'08:00',end:'08:50'};
+}
+let lastType='A';
+function addClass(t,{focus=true}={}){
+  lastType=t; const tm=suggestTimes(t);
+  const c={id:uid(),dayType:t,name:'',start:tm.start,end:tm.end,room:'',teacher:'',period:'',manual:true};
+  state.classes.push(c); sortClasses(); renderClasses(); save(); refresh();
+  if(focus) setTimeout(()=>{ const el=document.querySelector(`.cls[data-id="${c.id}"] input[data-k=name]`); if(el){ el.focus({preventScroll:true}); el.closest('.cls').scrollIntoView({block:'center',behavior:'smooth'}); } },30);
+  return c;
+}
+$$('[data-add]').forEach(b=>b.addEventListener('click',()=>addClass(b.dataset.add)));
+$('#addAnother').addEventListener('click',()=>{
+  const t=state.classes.length?lastType:'A'; addClass(t);
+});
+function copyAB(){
+  const a=state.classes.filter(c=>c.dayType==='A'&&c.start&&c.end);
+  const have=new Set(state.classes.filter(c=>c.dayType==='B').map(c=>c.start));
+  let n=0; a.forEach(c=>{ if(have.has(c.start)) return; state.classes.push({id:uid(),dayType:'B',name:'',start:c.start,end:c.end,room:'',teacher:'',period:'',manual:true}); n++; });
+  lastType='B'; sortClasses(); renderClasses(); save(); refresh();
+  if(n){ toast(`Added ${n} B-day class${n>1?'es':''} with the same times. Just type the names.`); const first=$$('.cls.t-B input[data-k=name]').find(i=>!i.value); if(first){ first.focus({preventScroll:true}); first.closest('.cls').scrollIntoView({block:'center',behavior:'smooth'}); } }
+  else toast('Your B day already has classes at those times.');
+  return n;
+}
+$('#copyAB').addEventListener('click',copyAB);
+function sortClasses(){const o={A:0,B:1,ALL:2};state.classes.sort((a,b)=>(o[a.dayType]-o[b.dayType])||((A.toMin(a.start)??9999)-(A.toMin(b.start)??9999)))}
+function needMsg(c){ const nm=!String(c.name||'').trim(), tm=!(c.start&&c.end&&A.toMin(c.end)>A.toMin(c.start)); return nm&&tm?'Needs a name and times':nm?'Needs a name':tm?'Needs an end time after the start':''; }
+function renderClasses(){
+  const el=$('#classList');
+  const btn=$('#copyAB'); if(btn) btn.classList.toggle('hidden',!state.classes.some(c=>c.dayType==='A'&&c.start&&c.end));
+  if(!state.classes.length){ el.innerHTML='<div class="empty">No classes yet. Upload a screenshot in step 1, or tap <b>Add another class</b> to type them in.</div>'; return; }
+  el.innerHTML=state.classes.map(c=>{
+    const bad=!A.validClass(c);
+    return `<div class="cls t-${c.dayType}" data-id="${c.id}">
+    <div class="head"><select data-k="dayType" aria-label="Which days" style="width:auto;min-height:36px;padding:4px 8px;font-weight:700">
+      <option value="A" ${c.dayType==='A'?'selected':''}>A day</option><option value="B" ${c.dayType==='B'?'selected':''}>B day</option><option value="ALL" ${c.dayType==='ALL'?'selected':''}>Every day</option></select>
+      <span class="flag" data-flag>${bad?needMsg(c):(c.flag?(c.endGuessed?'End time was guessed. Please check':c.endCheck?'End time differs from the other day. Please check':'Please double-check'):'')}</span>
+      <button class="btn quiet" type="button" data-del aria-label="Delete class">Delete</button></div>
+    <div class="g">
+      <div class="full"><label>Class</label><input type="text" data-k="name" value="${esc(c.name)}" placeholder="e.g. Chemistry" autocomplete="off"></div>
+      <div><label>Starts</label><input type="time" data-k="start" value="${esc(c.start)}"></div>
+      <div><label>Ends</label><input type="time" data-k="end" value="${esc(c.end)}"></div>
+      <div><label>Room</label><input type="text" data-k="room" value="${esc(c.room)}" placeholder="e.g. 214" autocomplete="off"></div>
+      <div><label>Period</label><input type="text" data-k="period" value="${esc(c.period)}" inputmode="numeric" placeholder="optional"></div>
+      <div class="full"><label>Teacher</label><input type="text" data-k="teacher" value="${esc(c.teacher)}" placeholder="optional" autocomplete="off"></div>
+    </div></div>`}).join('');
+}
+$('#classList').addEventListener('input',e=>{
+  const card=e.target.closest('.cls'); if(!card||!e.target.dataset.k) return;
+  const c=state.classes.find(x=>x.id===card.dataset.id); c[e.target.dataset.k]=e.target.value; c.flag=false; lastType=c.dayType;
+  if(e.target.dataset.k==='dayType') card.className='cls t-'+c.dayType;
+  card.querySelector('[data-flag]').textContent=needMsg(c);
+  save(); refreshSoon();
+});
+$('#classList').addEventListener('change',e=>{ if(['start','end','dayType'].includes(e.target.dataset.k)){ const f=document.activeElement; sortClasses(); renderClasses(); refresh(); } });
+$('#classList').addEventListener('click',e=>{ if(e.target.hasAttribute('data-del')){ const id=e.target.closest('.cls').dataset.id; state.classes=state.classes.filter(c=>c.id!==id); renderClasses(); save(); refresh(); } });
+
+/* ---------- Step 3: settings ---------- */
+function dayBoxes(el,arr,onch){
+  el.innerHTML=[1,2,3,4,5,6,0].map(d=>`<label><input type="checkbox" value="${d}" ${arr.includes(d)?'checked':''}><span>${WDS[d]}</span></label>`).join('');
+  el.onchange=()=>{ onch(Array.from(el.querySelectorAll('input:checked')).map(i=>+i.value)); save(); refresh(); };
+}
+let bound=false;
+function bindSettings(){
+  const S=state.settings, R=state.reminders, G=state.games;
+  const set=(sel,obj,key,type)=>{ const el=$(sel); if(type==='chk') el.checked=!!obj[key]; else el.value=obj[key]??''; };
+  const bind=(sel,getObj,key,type)=>{ const el=$(sel); set(sel,getObj(),key,type); if(bound) return;
+    el.addEventListener(type==='chk'?'change':'input',()=>{ const o=getObj(); o[key]=type==='chk'?el.checked:type==='num'?(Math.max(0,+el.value||0)):el.value; save(); refreshSoon(); syncDisabled(); }); };
+  const s=()=>state.settings, r=()=>state.reminders, g=()=>state.games;
+  bind('#startDate',s,'startDate'); bind('#endDate',s,'endDate'); bind('#startType',s,'startType'); bind('#calName',s,'calName');
+  const tzSel=$('#tz'); let zones=[]; try{zones=Intl.supportedValuesOf('timeZone')}catch(e){}
+  if(!zones.includes(S.tz)) zones.unshift(S.tz);
+  tzSel.innerHTML=zones.map(z=>`<option ${z===S.tz?'selected':''}>${esc(z)}</option>`).join('');
+  if(!bound) tzSel.addEventListener('change',()=>{state.settings.tz=tzSel.value;save();refresh()});
+  dayBoxes($('#schoolDays'),S.schoolDays,v=>state.settings.schoolDays=v);
+  bind('#gamesOn',g,'on','chk'); bind('#gameName',g,'name'); bind('#gameSkipOff',g,'skipOff','chk');
+  dayBoxes($('#gameDays'),G.days,v=>state.games.days=v);
+  bind('#rClass',r,'classAlert','chk'); bind('#rClassMin',r,'classMin','num');
+  bind('#rMorning',r,'morning','chk'); bind('#rMorningTime',r,'morningTime');
+  bind('#rEvening',r,'evening','chk'); bind('#rEveningTime',r,'eveningTime');
+  bind('#rHw',r,'hw','chk'); bind('#hwStart',r,'hwStart'); bind('#hwEnd',r,'hwEnd'); bind('#hwOn',r,'hwOn');
+  bound=true; syncDisabled(); renderOff(); renderActs();
+}
+function syncDisabled(){
+  const R=state.reminders;
+  $('#rClassMin').disabled=!R.classAlert; $('#rMorningTime').disabled=!R.morning; $('#rEveningTime').disabled=!R.evening;
+  ['#hwStart','#hwEnd','#hwOn'].forEach(s=>$(s).disabled=!R.hw);
+  $('#gamesBox').classList.toggle('hidden',!state.games.on);
+}
+function renderOff(){
+  const S=state.settings; S.daysOff=[...new Set(S.daysOff)].sort();
+  $('#offChips').innerHTML=S.daysOff.map(d=>`<span class="chip">${A.niceDate(d)} <button type="button" data-d="${d}" aria-label="Remove ${A.niceDate(d)}">×</button></span>`).join('')||'<span class="hint">No days off yet.</span>';
+}
+$('#addOff').addEventListener('click',()=>{
+  const a=$('#offFrom').value, b=$('#offTo').value; if(!a){toast('Pick a date first.');return}
+  const S=state.settings, end=b&&b>=a?b:a;
+  for(let d=a,n=0; d<=end&&n<366; d=A.addDays(d,1),n++){ if(a===end||S.schoolDays.includes(A.weekday(d))) S.daysOff.push(d); }
+  $('#offFrom').value=''; $('#offTo').value=''; renderOff(); save(); refresh();
+});
+$('#offChips').addEventListener('click',e=>{ const d=e.target.dataset.d; if(!d) return; state.settings.daysOff=state.settings.daysOff.filter(x=>x!==d); renderOff(); save(); refresh(); });
+
+function renderActs(){
+  $('#actList').innerHTML=state.activities.map(a=>`<div class="act" data-id="${a.id}">
+    <div class="field"><label class="f">Name</label><input type="text" data-k="name" value="${esc(a.name)}" placeholder="e.g. Soccer practice"></div>
+    <label class="f">Days</label><div class="days" data-days>${[1,2,3,4,5,6,0].map(d=>`<label><input type="checkbox" value="${d}" ${a.days.includes(d)?'checked':''}><span>${WDS[d]}</span></label>`).join('')}</div>
+    <label class="chk"><input type="checkbox" data-k="afterSchool" ${a.afterSchool?'checked':''}><span>Starts when school ends</span></label>
+    <div class="inline">
+      <div class="field"><label class="f">Starts</label><input type="time" data-k="start" value="${esc(a.start)}" ${a.afterSchool?'disabled':''}></div>
+      <div class="field"><label class="f">Ends</label><input type="time" data-k="end" value="${esc(a.end)}"></div>
+    </div>
+    <div class="inline">
+      <div class="field"><label class="f">Alert (min before)</label><input type="number" data-k="alert" min="0" value="${esc(a.alert)}" inputmode="numeric"></div>
+      <div class="field"><label class="f">Place (optional)</label><input type="text" data-k="location" value="${esc(a.location||'')}"></div>
+    </div>
+    <label class="chk"><input type="checkbox" data-k="skipOff" ${a.skipOff!==false?'checked':''}><span>Skip days off</span></label>
+    <p class="hint">On days without school, like Sundays, “starts when school ends” uses the usual end of the school day.</p>
+    <button class="btn quiet" type="button" data-del>Remove</button></div>`).join('');
+}
+$('#addAct').addEventListener('click',()=>{ state.activities.push({id:uid(),name:'Practice',days:[1,2,3,4],afterSchool:true,start:'15:00',end:'18:30',alert:30,location:'',skipOff:true}); renderActs(); save(); refresh(); });
+function actUpdate(e){
+  const card=e.target.closest('.act'); if(!card) return; const a=state.activities.find(x=>x.id===card.dataset.id); if(!a) return;
+  if(e.target.closest('[data-days]')) a.days=Array.from(card.querySelectorAll('[data-days] input:checked')).map(i=>+i.value);
+  else if(e.target.dataset.k){ const k=e.target.dataset.k; a[k]=e.target.type==='checkbox'?e.target.checked:e.target.type==='number'?(Math.max(0,+e.target.value||0)):e.target.value; if(k==='afterSchool') card.querySelector('[data-k=start]').disabled=a.afterSchool; }
+  save(); refreshSoon();
+}
+$('#actList').addEventListener('input',actUpdate);
+$('#actList').addEventListener('change',e=>{ if(e.target.type==='checkbox') actUpdate(e); });
+$('#actList').addEventListener('click',e=>{ if(e.target.hasAttribute('data-del')){ const id=e.target.closest('.act').dataset.id; state.activities=state.activities.filter(a=>a.id!==id); renderActs(); save(); refresh(); } });
+
+/* ---------- Step 4: preview + download ---------- */
+function warnings(){
+  const w=[], S=state.settings;
+  if(!state.classes.length) w.push('Add at least one class in step 2.');
+  const bad=state.classes.filter(c=>!A.validClass(c)); if(bad.length) w.push(`${bad.length} class${bad.length>1?'es need':' needs'} a name and an end time after the start time. Until then ${bad.length>1?'they':'it'} will be left out.`);
+  if(!S.startDate||!S.endDate||S.endDate<S.startDate) w.push('Set a first and last day in step 3. The last day has to come after the first.');
+  const hasA=state.classes.some(c=>c.dayType==='A'), hasB=state.classes.some(c=>c.dayType==='B');
+  if(S.startType!=='NONE'&&hasA!==hasB) w.push(`You have ${hasA?'A':'B'} day classes but no ${hasA?'B':'A'} day classes yet. ${hasA?'B':'A'} days will only show “Every day” classes.`);
+  if(S.startType==='NONE'&&(hasA||hasB)) w.push('“No rotation” is on, so A day and B day classes will all show up every school day.');
+  if(!S.schoolDays.length) w.push('Pick at least one day of the week that school meets.');
+  return w;
+}
+function renderPreview(){
+  $('#warns').innerHTML=warnings().map(x=>`<div class="warnbox">${esc(x)}</div>`).join('');
+  const S=state.settings, el=$('#preview');
+  if(!S.startDate||!S.endDate||S.endDate<S.startDate){el.innerHTML='';$('#stat').textContent='';return}
+  let from=S.startDate; while(A.weekday(from)!==1) from=A.addDays(from,-1);
+  const days=A.buildDays(state,from,A.addDays(from,13));
+  let html='';
+  days.forEach((d,i)=>{
+    if(i%7===0) html+=`<div class="wkhd">Week of ${A.niceDate(d.date)}</div>`;
+    const items=[];
+    if(d.morning) items.push(`<li class="rem"><time>${A.fmt12(d.morning)}</time><span>🔔 Any quizzes or due work today?</span></li>`);
+    if(d.school) d.classes.forEach(c=>items.push(`<li><time>${A.fmt12(c.start)}</time><span>${esc(c.name)}${c.room?' · '+esc(A.roomLabel(c.room)):''}</span></li>`));
+    d.acts.forEach(a=>items.push(`<li class="ac"><time>${A.fmt12(a.start)}</time><span>${esc(a.name)} until ${A.fmt12(a.end)}</span></li>`));
+    if(d.game) items.push(`<li class="ac"><time>All day</time><span>🏆 ${esc(d.game.name)}</span></li>`);
+    if(d.evening) items.push(`<li class="rem"><time>${A.fmt12(d.evening)}</time><span>🔔 Check assignments and quizzes</span></li>`);
+    if(d.hw) items.push(`<li class="rem"><time>${A.fmt12(d.hw.start)}</time><span>📚 Homework time until ${A.fmt12(d.hw.end)}</span></li>`);
+    const tag=d.school?(d.type?`<span class="tag ${d.type}">${d.type} day</span>`:'<span class="tag ALL">School day</span>'):(!d.inTerm?'<span class="tag off">Not in term</span>':d.off?'<span class="tag off">Day off</span>':'<span class="tag off">No school</span>');
+    html+=`<div class="day ${d.school?'':'off'}" data-date="${d.date}" data-type="${d.type||''}"><div class="dh"><span>${A.niceDate(d.date)}</span>${tag}</div>${items.length?`<ul>${items.join('')}</ul>`:''}</div>`;
+  });
+  el.innerHTML=html;
+  try{ const r=A.buildICS(state), c=r.counts; $('#stat').textContent=`Your calendar has ${r.count} events: ${c.classes} classes, ${c.activities} practices or activities, ${c.morning+c.evening} reminders, and ${c.homework} homework blocks${c.games?', plus '+c.games+' game days':''}.`; }catch(e){ $('#stat').textContent=''; console.error(e); }
+}
+let rt=null; function refreshSoon(){clearTimeout(rt);rt=setTimeout(refresh,250)}
+function refresh(){ renderPreview(); }
+function makeFile(){
+  if(!state.classes.some(A.validClass)){toast('Add at least one class with a name and times first.');return null}
+  const S=state.settings; if(!S.startDate||!S.endDate||S.endDate<S.startDate){toast('Set your first and last day first.');return null}
+  const r=A.buildICS(state), name=(S.calName||'Ayaama Calendar').replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-')||'Ayaama-Calendar';
+  return {blob:new Blob([r.text],{type:'text/calendar;charset=utf-8'}),name:name+'.ics',text:r.text};
+}
+$('#dlBtn').addEventListener('click',()=>{
+  const f=makeFile(); if(!f) return; window.__lastICS=f.text;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(f.blob); a.download=f.name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
+  toast('Calendar downloaded. Follow the steps below to add it.');
+});
+try{ if(navigator.canShare&&navigator.canShare({files:[new File(['x'],'t.ics',{type:'text/calendar'})]})) $('#shareBtn').classList.remove('hidden'); }catch(e){}
+$('#shareBtn').addEventListener('click',async()=>{ const f=makeFile(); if(!f) return; try{ await navigator.share({files:[new File([f.blob],f.name,{type:'text/calendar'})],title:'My school calendar'}); }catch(e){} });
+$('#resetBtn').addEventListener('click',()=>{ if(!confirm('Clear all classes and settings saved on this device?')) return; localStorage.removeItem(KEY); location.reload(); });
+
+/* init */
+sortClasses(); renderThumbs(); renderClasses(); bindSettings(); applyMode(); refresh();
+window.__ayaama={setMode,copyAB,addClass,get state(){return state}, setState(v){state=v; save(); sortClasses(); renderClasses(); bindSettings(); refresh();}, images, readAll};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="#top" aria-label="Ayaama home">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#DC3A16"/><circle cx="32" cy="34" r="18" fill="none" stroke="#FFF7F2" stroke-width="5"/><path d="M32 24v11l7 5" fill="none" stroke="#FFF7F2" stroke-width="5" stroke-linecap="round"/><path d="M24 9h16" stroke="#FFE08A" stroke-width="5" stroke-linecap="round"/></svg>
+    Ayaama
+  </a>
+  <nav class="steps-nav" aria-label="Steps"><a href="#s1">1</a><a href="#s2">2</a><a href="#s3">3</a><a href="#s4">4</a></nav>
+</div></header>
+
+<main class="wrap" id="top">
+  <div class="hero">
+    <span class="pill">🔒 Private: everything stays on your device</span>
+    <h1 style="margin-top:14px">Snap your schedule.<br><em>Stay on time.</em></h1>
+    <p class="lead">Turn a screenshot of your class schedule into a phone calendar, with class alerts, homework check-ins, and practice built in. Made for students and the parents cheering them on.</p>
+    <ol class="how">
+      <li><div><b>Snap it or type it</b><span>Upload a screenshot of the schedule and we'll read it, or type your classes in yourself in about 2 minutes.</span></div></li>
+      <li><div><b>Check it</b><span>Fix anything the reader got wrong, then add days off, practice, and games.</span></div></li>
+      <li><div><b>Add it to your phone</b><span>Download one calendar file that works with iPhone Calendar and Google Calendar.</span></div></li>
+    </ol>
+  </div>
+
+  <section class="card" id="s1">
+    <h2><span class="n">1</span>Add your schedule</h2>
+    <p class="sub">Pick whichever is easier. You can switch anytime, and the classes you've added stay put.</p>
+    <div class="choices" role="group" aria-label="How do you want to add your schedule?">
+      <button type="button" class="choice" data-mode="upload" aria-pressed="false">
+        <span class="ic" aria-hidden="true">📸</span><b>Upload a screenshot</b><span class="ln">We'll read your classes for you</span>
+      </button>
+      <button type="button" class="choice" data-mode="manual" aria-pressed="false">
+        <span class="ic" aria-hidden="true">⌨️</span><b>Type it in</b><span class="ln">Add your classes yourself, about 2 minutes</span>
+      </button>
+    </div>
+    <div id="uploadPane" class="hidden">
+      <p class="sub" style="margin-top:14px">Screenshots from the school app work best. Got an A/B rotation? Add one picture for each day type.</p>
+      <div class="drop" id="drop">
+        <p>Drop images here, or choose them from your phone.</p>
+        <label class="btn primary" for="file">Choose schedule pictures
+          <input id="file" class="sr" type="file" accept="image/*" multiple>
+        </label>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary block hidden" type="button" id="readBtn">Read my schedule</button>
+      </div>
+      <p class="hint">The reader runs in your browser, and your pictures are never uploaded. The first read downloads a free text-reading tool (about 10 MB), so it can take a moment.</p>
+    </div>
+    <div id="manualPane" class="hidden">
+      <p class="note" style="margin-top:14px">You'll type your classes in step 2, right below. Tip: enter your A day first, then tap <b>Copy A-day times to B day</b> so you only have to add the B-day class names.</p>
+      <button class="btn ghost block" type="button" id="toList">Go to my class list ↓</button>
+    </div>
+  </section>
+
+  <section class="card" id="s2">
+    <h2><span class="n">2</span>Check your classes</h2>
+    <p class="sub" id="s2sub">Look over each class and fix anything that looks off. Picture readers make mistakes, so this step matters.</p>
+    <div id="manualHint" class="note hidden" style="margin-bottom:12px">✍️ <b>Type each class from your schedule.</b> Start with your A day (or pick “Every day” if your classes don't rotate). Each new class starts 7 minutes after the one before it ends, so you'll mostly just type names.</div>
+    <div id="classList" class="classes"></div>
+    <button class="btn primary block" type="button" id="addAnother" style="margin-top:12px">+ Add another class</button>
+    <button class="btn ghost block hidden" type="button" id="copyAB" style="margin-top:10px">Copy A-day times to B day</button>
+    <div class="row" style="margin-top:10px">
+      <button class="btn ghost small" type="button" data-add="A">+ A day class</button>
+      <button class="btn ghost small" type="button" data-add="B">+ B day class</button>
+      <button class="btn ghost small" type="button" data-add="ALL">+ Every day class</button>
+    </div>
+    <details class="howto" id="rawBox"><summary>Show the text the reader found</summary><pre id="rawText" style="white-space:pre-wrap;font-size:13px;color:var(--muted);margin:8px 0 0">Nothing read yet.</pre></details>
+  </section>
+
+  <section class="card" id="s3">
+    <h2><span class="n">3</span>Set up your term</h2>
+    <p class="sub">Ayaama works out A and B days for you. The rotation skips weekends and days off.</p>
+    <fieldset>
+      <legend>School days</legend>
+      <div class="inline">
+        <div class="field"><label class="f" for="startDate">First day</label><input type="date" id="startDate"></div>
+        <div class="field"><label class="f" for="endDate">Last day</label><input type="date" id="endDate"></div>
+      </div>
+      <div class="field"><label class="f" for="startType">The first day is</label>
+        <select id="startType"><option value="A">an A day</option><option value="B">a B day</option><option value="NONE">No rotation (same classes every day)</option></select>
+      </div>
+      <label class="f">School meets on</label>
+      <div class="days" id="schoolDays"></div>
+      <div class="field" style="margin-top:14px"><label class="f">Days off (holidays, breaks, snow days)</label>
+        <div class="inline"><input type="date" id="offFrom" aria-label="Day off, or first day of a break"><input type="date" id="offTo" aria-label="Last day of a break (optional)"></div>
+        <p class="hint">Pick one date, or a first and last date for a break.</p>
+        <button class="btn ghost small" type="button" id="addOff" style="margin-top:8px">+ Add day off</button>
+        <div class="chips" id="offChips"></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Practice and activities</legend>
+      <div id="actList"></div>
+      <button class="btn ghost small" type="button" id="addAct">+ Add practice or activity</button>
+    </fieldset>
+    <fieldset>
+      <legend>Game days</legend>
+      <label class="chk"><input type="checkbox" id="gamesOn"><span>Add game day placeholders (all day, add times later)</span></label>
+      <div id="gamesBox">
+        <div class="field"><label class="f" for="gameName">Name</label><input type="text" id="gameName" placeholder="Game day"></div>
+        <label class="f">On</label><div class="days" id="gameDays"></div>
+        <label class="chk"><input type="checkbox" id="gameSkipOff"><span>Skip days off</span></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Reminders</legend>
+      <label class="chk"><input type="checkbox" id="rClass"><span>Alert before each class</span></label>
+      <div class="field" style="max-width:220px"><label class="f" for="rClassMin">Minutes before</label><input type="number" id="rClassMin" min="0" max="120" inputmode="numeric"></div>
+      <label class="chk"><input type="checkbox" id="rMorning"><span>Morning check: “Any quizzes or due work today?” on school days</span></label>
+      <div class="field" style="max-width:220px"><label class="f" for="rMorningTime">Time</label><input type="time" id="rMorningTime"></div>
+      <label class="chk"><input type="checkbox" id="rEvening"><span>Evening check: “Check assignments and quizzes” on school days and the night before school starts again</span></label>
+      <div class="field" style="max-width:220px"><label class="f" for="rEveningTime">Time</label><input type="time" id="rEveningTime"></div>
+      <label class="chk"><input type="checkbox" id="rHw"><span>Homework block</span></label>
+      <div class="inline">
+        <div class="field"><label class="f" for="hwStart">From</label><input type="time" id="hwStart"></div>
+        <div class="field"><label class="f" for="hwEnd">To</label><input type="time" id="hwEnd"></div>
+      </div>
+      <div class="field"><label class="f" for="hwOn">On</label>
+        <select id="hwOn"><option value="activity">Nights with practice or activities</option><option value="school">School nights (the night before a school day)</option><option value="both">Both</option></select>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Calendar</legend>
+      <div class="field"><label class="f" for="calName">Calendar name</label><input type="text" id="calName" placeholder="My School Schedule"></div>
+      <div class="field"><label class="f" for="tz">Time zone</label><select id="tz"></select><p class="hint">Picked from your device. Change it only if the school is in another time zone.</p></div>
+    </fieldset>
+  </section>
+
+  <section class="card" id="s4">
+    <h2><span class="n">4</span>Preview and download</h2>
+    <p class="sub">Here are your first two weeks. Check that the A and B days match the school's.</p>
+    <div id="warns"></div>
+    <div class="week" id="preview"></div>
+    <div class="dl">
+      <button class="btn primary block" type="button" id="dlBtn">⬇ Download my calendar (.ics)</button>
+      <button class="btn ghost block hidden" type="button" id="shareBtn">Send to my phone</button>
+      <p class="stat" id="stat"></p>
+    </div>
+    <details class="howto" open><summary>📱 iPhone: add it to Calendar</summary><ol>
+      <li>Open this page in <b>Safari</b> on the iPhone and tap <b>Download my calendar</b>. Or AirDrop, text, or email the file to the phone and tap it.</li>
+      <li>Tap <b>Add All</b>.</li>
+      <li>Choose a calendar (or make a new one called “School”), then tap <b>Done</b>.</li>
+      <li>To get alerts, allow notifications for Calendar in Settings → Notifications → Calendar.</li>
+    </ol></details>
+    <details class="howto"><summary>🤖 Android and Google Calendar</summary><ol>
+      <li>Download the file. On a phone it goes to <b>Downloads</b>. Importing is easiest from a computer.</li>
+      <li>Open <a href="https://calendar.google.com/calendar/r/settings/export" target="_blank" rel="noopener">Google Calendar → Settings → Import &amp; export</a>. Tip: make a new calendar first (Settings → Add calendar → Create new calendar) so you can remove everything at once later.</li>
+      <li>Choose the <code>.ics</code> file, pick the calendar, and click <b>Import</b>. It then shows up in the Google Calendar app on the phone.</li>
+      <li>Google Calendar doesn't keep alerts from imported files. To get alerts, open that calendar's settings and set default notifications (for example, 15 minutes before).</li>
+    </ol></details>
+    <details class="howto"><summary>Need to change something later?</summary><p style="margin:.5em 0 0">Your choices are saved on this device only. Come back, make changes, and download again. Before importing the new file, delete the old events (or the whole “School” calendar) so nothing shows up twice.</p></details>
+    <div class="row" style="margin-top:6px"><button class="btn quiet" type="button" id="resetBtn">Start over and clear saved info</button></div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <p class="ded">Named for Ayaama, who believed in being on time.</p>
+  <p>Ayaama reads your schedule on your device. No account, no uploads, nothing to sell. Always double-check against the school's official schedule.</p>
+</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js" defer></script>
